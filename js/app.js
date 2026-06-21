@@ -95,6 +95,7 @@ window.TYRE_COMPOUNDS.forEach(compound => {
       raceLaps,
       pitLoss: preset.pitLoss,
       degPerLap: selectedCompound.degPerLap,
+      paceOffset: selectedCompound.paceOffset,
       initialGap,
       rivalPitLap,
       trafficZones: [],
