@@ -53,11 +53,10 @@ function simulateRace(race, bPitLap) {
       ageB += 1;
     }
 
-    // Tyre age differential: whoever is on the older rubber loses time.
-    gap += degPerLap * (ageB - ageA);
-    if (lap === 1) {
-      gap += race.paceOffset || 0;
-    }
+    const effectiveAgeB = Math.min(ageB, 30);
+    const effectiveAgeA = Math.min(ageA, 30);
+    gap += degPerLap * (effectiveAgeB - effectiveAgeA);
+    
 
     series.push({ lap, gap });
   }
