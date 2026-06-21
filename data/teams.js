@@ -21,34 +21,16 @@ window.TEAMS = [
 ];
 
 window.CIRCUIT_PRESETS = [
-  { id: "monaco", 
-    label: "Monaco/Street Circuits", 
-    blurb: "Narrow streets, impossible to overtake. Pit loss is brutal.", 
-    pitLoss: 32, 
-    degPerLap: 0.03 
-  },
-  {
-    id: "power",
-    label: "Power circuit",
-    blurb: "Long straights, fast in-and-out lap. Pit stops are cheap here.",
-    pitLoss: 19,
-    degPerLap: 0.08
-  },
-  {
-    id: "abrasive",
-    label: "High-degradation track",
-    blurb: "Rough surface, hard on tyres. Fresh rubber is a huge advantage.",
-    pitLoss: 22,
-    degPerLap: 0.16
-  },
-  {
-    id: "easy",
-    label: "Easy-on-tyres track",
-    blurb: "Smooth surface. Old tyres barely slow down, so the undercut is weak.",
-    pitLoss: 22,
-    degPerLap: 0.035
-  }
+  { id: "monaco",      label: "Monaco",           pitLoss: 32,   degPerLap: 0.03,  defaultLaps: 78 },
+  { id: "monza",       label: "Monza",             pitLoss: 24,   degPerLap: 0.078, defaultLaps: 53 },
+  { id: "silverstone", label: "Silverstone",       pitLoss: 22,   degPerLap: 0.11,  defaultLaps: 52 },
+  { id: "spa",         label: "Spa-Francorchamps", pitLoss: 23,   degPerLap: 0.09,  defaultLaps: 44 },
+  { id: "bahrain",     label: "Bahrain",           pitLoss: 21,   degPerLap: 0.13,  defaultLaps: 57 },
+  { id: "singapore",   label: "Singapore",         pitLoss: 30,   degPerLap: 0.04,  defaultLaps: 61 },
+  { id: "suzuka",      label: "Suzuka",            pitLoss: 22,   degPerLap: 0.10,  defaultLaps: 53 },
+  { id: "miami",       label: "Miami",             pitLoss: 20,   degPerLap: 0.085, defaultLaps: 57 }
 ];
+
 window.TYRE_COMPOUNDS = [
   { id: "soft",   label: "Soft",   degPerLap: 0.14, paceOffset: -0.4 },
   { id: "medium", label: "Medium", degPerLap: 0.08, paceOffset: 0 },
