@@ -28,7 +28,7 @@
 
   const teamAEl = document.getElementById('teamA');
   const teamBEl = document.getElementById('teamB');
-  const presetGrid = document.getElementById('presetGrid');
+  const circuitSelect = document.getElementById('circuitSelect');
   const raceLapsInput = document.getElementById('raceLapsInput');
   const raceLapsOut = document.getElementById('raceLapsOut');
   const initialGapInput = document.getElementById('initialGapInput');
@@ -60,27 +60,19 @@ window.TYRE_COMPOUNDS.forEach(compound => {
   teamAEl.value = 2; // Mercedes
   teamBEl.value = 0; // Red Bull
 
-  let activePresetId = window.CIRCUIT_PRESETS[0].id;
-
   window.CIRCUIT_PRESETS.forEach(preset => {
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'preset-card';
-    card.dataset.presetId = preset.id;
-    card.innerHTML = `<p class="preset-card__label">${preset.label}</p><p class="preset-card__blurb">${preset.blurb}</p>`;
-    card.addEventListener('click', () => {
-      activePresetId = preset.id;
-      presetGrid.querySelectorAll('.preset-card').forEach(c => c.classList.toggle('is-active', c === card));
-      updateBuilderRace();
-    });
-    presetGrid.appendChild(card);
+    const option = document.createElement('option');
+    option.value = preset.id;
+    option.textContent = preset.label;
+    circuitSelect.appendChild(option);
   });
-  presetGrid.firstElementChild.classList.add('is-active');
+
+circuitSelect.addEventListener('change', updateBuilderRace);
 
   function updateBuilderRace() {
-    const preset = window.CIRCUIT_PRESETS.find(p => p.id === activePresetId);
+    const preset = window.CIRCUIT_PRESETS.find(p => p.id === circuitSelect.value) || window.CIRCUIT_PRESETS[0];
     const selectedCompound = window.TYRE_COMPOUNDS.find(c => c.id === tyreCompoundEl.value);
-    const raceLaps = parseInt(raceLapsInput.value, 10);
+    const raceLaps = preset.defaultLaps;
     const initialGap = parseFloat(initialGapInput.value);
     const rivalPitLap = Math.min(parseInt(rivalPitLapInput.value, 10), raceLaps - 3);
 
@@ -106,7 +98,7 @@ window.TYRE_COMPOUNDS.forEach(compound => {
     builderPanel.setRace(race);
   }
 
-  [teamAEl, teamBEl, raceLapsInput, initialGapInput, rivalPitLapInput, tyreCompoundEl].forEach(el => {
+  [teamAEl, teamBEl,initialGapInput, rivalPitLapInput, tyreCompoundEl].forEach(el => {
     el.addEventListener('input', updateBuilderRace);
   });
 
