@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Undercut Simulator — F1 Pit Strategy</title>
+  <meta name="description" content="Build your own F1 race, choose when to pit, and see whether the undercut works." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <p class="eyebrow">Pit wall strategy simulator</p>
+    <h1>Will the undercut work?</h1>
+
+    <nav class="tabs" id="tabNav">
+      <button class="tab-btn is-active" data-tab="builder">Build your own race</button>
+      <button class="tab-btn" data-tab="famous">Famous undercuts</button>
+    </nav>
+
+    <!-- ============================================================
+         TAB 1: BUILD YOUR OWN RACE
+    ============================================================= -->
+    <section class="tab-panel is-active" id="tab-builder">
+
+      <article class="explainer">
+        <h2>What's actually going on here?</h2>
+        <p>
+          In F1, tyres wear out over a race. As the rubber degrades, the
+          car gets a little slower every lap, the same way old running
+          shoes lose their bounce. At some point every car has to pit:
+          drive into the garage, swap the worn tyres for a fresh set, and
+          rejoin the race. That stop costs time, usually somewhere
+          between 18 and 27 seconds depending on the track, since the car
+          is crawling through the pit lane at a strict speed limit while
+          a crew changes four wheels.
+        </p>
+        <p>
+          Here's the interesting part. Once a car has fresh tyres, it's
+          faster than a car still running on old, worn ones, often by
+          well over a second a lap. So if you pit a few laps before your
+          rival, you spend those laps lapping much faster than them while
+          they're stuck on ageing rubber. Sometimes you gain back more
+          time than the pit stop itself cost you, and when your rival
+          finally pits too, you come out ahead of them even though they
+          never lost the lead on track. That move is called the
+          <strong>undercut</strong>.
+        </p>
+        <p>
+          It's a gamble though. Pit too early and your fresh tyres start
+          wearing out before your rival even stops, so you lose your
+          advantage just as it matters. Pit at the wrong moment and you
+          might come out of the pits stuck right behind a slower car with
+          nowhere to overtake, which erases the whole gain instantly.
+          That's the puzzle this tool lets you play with.
+        </p>
+
+        <div class="glossary">
+          <div class="glossary__item">
+            <p class="glossary__term">Tyre degradation</p>
+            <p class="glossary__def">How many seconds slower a car gets each lap as its tyres age.</p>
+          </div>
+          <div class="glossary__item">
+            <p class="glossary__term">Pit lane time loss</p>
+            <p class="glossary__def">How many seconds a stop costs versus just driving straight past the pits.</p>
+          </div>
+          <div class="glossary__item">
+            <p class="glossary__term">Gap</p>
+            <p class="glossary__def">How many seconds behind, or ahead, one car is of another at a given moment.</p>
+          </div>
+          <div class="glossary__item">
+            <p class="glossary__term">Undercut</p>
+            <p class="glossary__def">Pitting before your rival to use fresh-tyre pace to jump ahead of them.</p>
+          </div>
+          <div class="glossary__item">
+            <p class="glossary__term">Overcut</p>
+            <p class="glossary__def">The opposite: staying out longer than your rival and gaining because they pit too soon.</p>
+          </div>
+          <div class="glossary__item">
+            <p class="glossary__term">Traffic</p>
+            <p class="glossary__def">Coming out of the pits behind a slower car you can't immediately get past.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="builder">
+        <h2>Now build your own scenario</h2>
+        <p class="builder__lede">
+          Pick two teams, pick what kind of track this is, decide how long
+          the race runs, and choose when your rival stops. Then drag the
+          main slider below to find the lap where the undercut actually
+          works.
+        </p>
+
+        <div class="builder__row">
+          <div class="builder__field">
+            <label for="teamA">Leading car</label>
+            <select id="teamA"></select>
+          </div>
+          <div class="builder__field">
+            <label for="teamB">Chasing car (you control this one)</label>
+            <select id="teamB"></select>
+          </div>
+        </div>
+        <div class="builder__field">
+          <label for="tyreCompound">Tyre compound</label>
+          <select id="tyreCompound"></select>
+        </div>
+
+        <div class="builder__field">
+          <label>Track style</label>
+          <div class="preset-grid" id="presetGrid"></div>
+        </div>
+
+        <div class="builder__row">
+          <div class="builder__field">
+            <label for="raceLapsInput">Race length: <span id="raceLapsOut"></span> laps</label>
+            <input type="range" id="raceLapsInput" min="30" max="70" step="1" value="55" />
+          </div>
+          <div class="builder__field">
+            <label for="initialGapInput">Starting gap: <span id="initialGapOut"></span>s</label>
+            <input type="range" id="initialGapInput" min="0" max="5" step="0.1" value="1.5" />
+          </div>
+        </div>
+
+        <div class="builder__field">
+          <label for="rivalPitLapInput">Your rival pits on lap <span id="rivalPitLapOut"></span> (not your call, they decide this)</label>
+          <input type="range" id="rivalPitLapInput" min="5" max="65" step="1" value="27" />
+        </div>
+      </article>
+
+      <div id="sim-builder"></div>
+    </section>
+
+    <!-- ============================================================
+         TAB 2: FAMOUS UNDERCUTS
+    ============================================================= -->
+    <section class="tab-panel" id="tab-famous">
+      <div class="race-picker">
+        <label for="raceSelect">Race</label>
+        <select id="raceSelect"></select>
+      </div>
+      <p class="race-note" id="raceNote"></p>
+
+      <div id="sim-famous"></div>
+    </section>
+
+    <footer>
+      Gap and pit-loss figures for the famous-races tab are calibrated to public race data. The builder tab is a sandbox, numbers there are illustrative.
+    </footer>
+  </div>
+
+  <!-- a hidden template for the reusable slider + chart + result block -->
+  <template id="simTemplate">
+    <div class="rival-tag" data-role="rivalTag"></div>
+
+    <section class="strategy-panel">
+      <div class="strategy-panel__top">
+        <div>
+          <div class="slider-label">Pit <span data-role="carBName"></span> on</div>
+          <div class="lap-readout"><span data-role="lapReadout">1</span><span>lap</span></div>
+        </div>
+        <div class="gap-ticker">
+          <div class="gap-ticker__value" data-role="gapTickerValue">+0.00</div>
+          <div class="gap-ticker__label" data-role="gapTickerLabel">gap at the restart</div>
+        </div>
+      </div>
+
+      <input type="range" data-role="lapSlider" min="1" max="50" value="1" step="1" />
+      <div class="pit-marker-label" data-role="pitMarkerLabel">Pit on lap 1</div>
+    </section>
+
+    <section class="chart-panel">
+      <div class="chart-panel__legend">
+        <span data-role="legendA">● Leader</span>
+        <span data-role="legendB">● Chaser</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas data-role="chartCanvas"></canvas>
+      </div>
+      <p class="chart-panel__caption" data-role="chartCaption"></p>
+    </section>
+
+    <section class="result-banner" data-role="resultBanner">
+      <p class="result-banner__headline" data-role="resultHeadline">—</p>
+      <p class="result-banner__detail" data-role="resultDetail">Move the slider to choose a pit lap.</p>
+    </section>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="data/teams.js"></script>
+  <script src="data/races.js"></script>
+  <script src="js/strategy.js"></script>
+  <script src="js/chartRender.js"></script>
+  <script src="js/simPanel.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
