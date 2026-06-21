@@ -28,6 +28,7 @@
 
   const teamAEl = document.getElementById('teamA');
   const teamBEl = document.getElementById('teamB');
+  const raceLapsOut = document.getElementById('raceLapsOut');
   const circuitSelect = document.getElementById('circuitSelect');
   const initialGapInput = document.getElementById('initialGapInput');
   const initialGapOut = document.getElementById('initialGapOut');
