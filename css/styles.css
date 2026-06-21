@@ -460,8 +460,13 @@ footer a { color: var(--text-dim); }
 
 .preset-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+}
+
+.preset-grid .preset-card {
+  padding: 8px 20px;
+  text-align: center;
 }
 
 .preset-card {
@@ -495,10 +500,11 @@ footer a { color: var(--text-dim); }
   color: var(--text-dim);
   line-height: 1.4;
   margin: 0;
+  display: none;
 }
 
 @media (max-width: 600px) {
-  .glossary, .builder__row, .preset-grid {
+  .glossary, .builder__row {
     grid-template-columns: 1fr;
   }
 }
