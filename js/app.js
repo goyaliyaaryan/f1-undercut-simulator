@@ -29,28 +29,44 @@
   const teamAEl = document.getElementById('teamA');
   const teamBEl = document.getElementById('teamB');
   const raceLapsOut = document.getElementById('raceLapsOut');
-  const weatherEl = document.getElementById('weatherCondition');
   const circuitSelect = document.getElementById('circuitSelect');
   const initialGapInput = document.getElementById('initialGapInput');
   const initialGapOut = document.getElementById('initialGapOut');
   const rivalPitLapInput = document.getElementById('rivalPitLapInput');
   const rivalPitLapOut = document.getElementById('rivalPitLapOut');
-  const tyreCompoundEl = document.getElementById('tyreCompound');
-
+  const tyreGrid = document.getElementById('tyreGrid');
+  const weatherGrid = document.getElementById('weatherGrid');
+  let selectedTyreId = window.TYRE_COMPOUNDS[0].id;
+  let selectedWeatherId = window.WEATHER_CONDITIONS[0].id;
 
 
   window.TYRE_COMPOUNDS.forEach(compound => {
-    const option = document.createElement('option');
-    option.value = compound.id;
-    option.textContent = compound.label;
-    tyreCompoundEl.appendChild(option);
-});
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'preset-card';
+    btn.innerHTML = `<p class="preset-card__label">${compound.label}</p>`;
+    btn.addEventListener('click', () => {
+      selectedTyreId = compound.id;
+      tyreGrid.querySelectorAll('.preset-card').forEach(c => c.classList.toggle('is-active', c === btn));
+      updateBuilderRace();
+    });
+    tyreGrid.appendChild(btn);
+  });
+  tyreGrid.firstElementChild.classList.add('is-active');
+
   window.WEATHER_CONDITIONS.forEach(condition => {
-    const option = document.createElement('option');
-    option.value = condition.id;
-    option.textContent = condition.label;
-    weatherEl.appendChild(option);
-});
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'preset-card';
+    btn.innerHTML = `<p class="preset-card__label">${condition.label}</p>`;
+    btn.addEventListener('click', () => {
+      selectedWeatherId = condition.id;
+      weatherGrid.querySelectorAll('.preset-card').forEach(c => c.classList.toggle('is-active', c === btn));
+      updateBuilderRace();
+    });
+    weatherGrid.appendChild(btn);
+  });
+  weatherGrid.firstElementChild.classList.add('is-active');
   
    window.TEAMS.forEach((team, i) => {
     const optionA = document.createElement('option');
@@ -77,8 +93,8 @@ circuitSelect.addEventListener('change', updateBuilderRace);
 
   function updateBuilderRace() {
     const preset = window.CIRCUIT_PRESETS.find(p => p.id === circuitSelect.value) || window.CIRCUIT_PRESETS[0];
-    const selectedCompound = window.TYRE_COMPOUNDS.find(c => c.id === tyreCompoundEl.value);
-    const selectedWeather = window.WEATHER_CONDITIONS.find(w => w.id === weatherEl.value);
+    const selectedCompound = window.TYRE_COMPOUNDS.find(c => c.id === selectedTyreId);
+    const selectedWeather = window.WEATHER_CONDITIONS.find(w => w.id === selectedWeatherId);
     const raceLaps = preset.defaultLaps;
     const initialGap = parseFloat(initialGapInput.value);
     const rivalPitLap = Math.min(parseInt(rivalPitLapInput.value, 10), raceLaps - 3);
@@ -105,7 +121,7 @@ circuitSelect.addEventListener('change', updateBuilderRace);
     builderPanel.setRace(race);
   }
 
-  [teamAEl, teamBEl,initialGapInput, rivalPitLapInput, tyreCompoundEl, weatherEl].forEach(el => {
+  [teamAEl, teamBEl,initialGapInput, rivalPitLapInput ].forEach(el => {
     el.addEventListener('input', updateBuilderRace);
   });
 
