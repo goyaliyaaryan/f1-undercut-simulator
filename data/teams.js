@@ -52,3 +52,9 @@ window.TYRE_COMPOUNDS = [
   { id: "medium", label: "Medium", degPerLap: 0.08, paceOffset: 0 },
   { id: "hard",   label: "Hard",   degPerLap: 0.04, paceOffset: 0.3 }
 ];
+
+window.WEATHER_CONDITIONS = [
+  { id: "hot",  label: "Hot (35°C+)",   multiplier: 1.4 },
+  { id: "mild", label: "Mild (20-25°C)", multiplier: 1.0 },
+  { id: "cold", label: "Cold (10-15°C)", multiplier: 0.7 },
+];
