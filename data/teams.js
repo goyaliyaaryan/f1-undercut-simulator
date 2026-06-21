@@ -50,7 +50,7 @@ window.CIRCUIT_PRESETS = [
   }
 ];
 window.TYRE_COMPOUNDS = [
-  { id: "soft",   label: "Soft",   degPerLap: 0.14 },
-  { id: "medium", label: "Medium", degPerLap: 0.08 },
-  { id: "hard",   label: "Hard",   degPerLap: 0.04 }
+  { id: "soft",   label: "Soft",   degPerLap: 0.14, paceOffset: -0.4 },
+  { id: "medium", label: "Medium", degPerLap: 0.08, paceOffset: 0 },
+  { id: "hard",   label: "Hard",   degPerLap: 0.04, paceOffset: 0.3 }
 ];
